@@ -1,0 +1,10 @@
+# middle output
+*.pyc
+*.model
+*.npy
+
+
+experiments/images/
+data/
+experiments/test/
+model/pred_results_*/
