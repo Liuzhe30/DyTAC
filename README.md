@@ -1,2 +1,6 @@
 # DyTAC
-DyTAC: Reconstructing the Epigenetic Trajectory of Drug Response through a Digital Twin Cell System
+DyTAC: A Digital Twin Framework for Reconstructing Chromatin Accessibility and 3D Genome Dynamics during T-cell Activation
+
+
+## Environment
+- Python == 3.10.13

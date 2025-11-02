@@ -1,0 +1,21 @@
+{
+  "data": { "atac_path": "data/atac_matrix.npy", "time_path": "data/timepoints.npy" },
+  "model": {
+    "latent_dim": 4,
+    "dropout": 0.1,
+    "tfm_layers": 4,
+    "tfm_heads": 4,
+    "tfm_ff": 256
+  },
+  "train": {
+  "epochs": 20000,
+  "batch_size": 32,
+  "lr": 1e-3,
+  "assim_alpha": 0.8,
+  "seed": 42,
+  "early_stop_patience": 50,
+  "early_stop_min_delta": 1e-3,
+  "ema_beta": 0.98
+},
+  "output": { "ckpt_dir": "checkpoints", "fig_dir": "figures" }
+}

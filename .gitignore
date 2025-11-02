@@ -6,5 +6,5 @@
 
 experiments/images/
 data/
-experiments/test/
-model/pred_results_*/
+figures/
+figures_fused/
