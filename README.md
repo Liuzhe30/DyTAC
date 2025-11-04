@@ -1,5 +1,5 @@
 # DyTAC
-DyTAC: A Digital Twin Framework for Reconstructing Chromatin Accessibility and 3D Genome Dynamics during T-cell Activation
+DyTAC: A Digital Twin Framework for Modeling Chromatin Accessibility and 3D Genome Dynamics during T-cell Activation
 
 
 ## Environment

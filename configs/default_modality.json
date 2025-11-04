@@ -1,0 +1,36 @@
+{
+  "modality": "fused",
+  "data": {
+    "atac_path": "data/atac_matrix.npy",
+    "hic_path": "data/hic_coarse.npy",
+    "time_path": "data/timepoints.npy"
+  },
+  "model": {
+    "latent_dim": 4,
+    "latent_dim_hic": 4,
+    "dropout": 0.1,
+    "tfm_layers": 4,
+    "tfm_heads": 4,
+    "tfm_ff": 512,
+    "gated": true
+  },
+  "train": {
+    "epochs": 20000,
+    "lr": 0.001,
+    "seed": 42,
+    "lambda_latent": 0.1,
+    "lambda_atac": 0.9,
+    "lambda_hic": 0.9,
+    "grad_clip": 1.0,
+    "early_stop_patience": 200,
+    "early_stop_min_delta": 1e-3,
+    "ema_beta": 0.98,
+    "sched_T0": 500,
+    "sched_Tmult": 2,
+    "assim_alpha": 0.8
+  },
+  "output": {
+    "ckpt_dir": "checkpoints_fused",
+    "fig_dir": "figures_fused"
+  }
+}

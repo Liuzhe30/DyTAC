@@ -94,11 +94,6 @@ def main(cfg):
     m_na = rmse(X_true_std, X_pred_std_noass); r_na = r2(X_true_std, X_pred_std_noass)
     m_as = rmse(X_true_std, X_pred_std_assim); r_as = r2(X_true_std, X_pred_std_assim)
 
-    with open(os.path.join(cfg["output"]["fig_dir"], "metrics.txt"), "w") as f:
-        f.write(f"baseline_rmse_std {m_bl:.6f} r2 {r_bl}\n")
-        f.write(f"no_assim_rmse_std {m_na:.6f} r2 {r_na}\n")
-        f.write(f"with_assim_rmse_std {m_as:.6f} r2 {r_as}\n")
-
     print(f"baseline_rmse_std {m_bl:.6f} r2 {r_bl}")
     print(f"no_assim_rmse_std {m_na:.6f} r2 {r_na}")
     print(f"with_assim_rmse_std {m_as:.6f} r2 {r_as}")
@@ -108,6 +103,16 @@ def main(cfg):
     err_as = np.sqrt(((X_true_std - X_pred_std_assim)**2).mean(axis=1))
     for i, tt in enumerate(times):
         print(f"time {tt:.2f}h no-assim {err_no[i]:.4f} with-assim {err_as[i]:.4f}")
+
+    metrics_path = os.path.join(cfg["output"]["fig_dir"], "metrics.txt")
+    with open(metrics_path, "w") as f:
+        f.write(f"baseline_rmse_std {m_bl:.6f} r2 {r_bl}\n")
+        f.write(f"no_assim_rmse_std {m_na:.6f} r2 {r_na}\n")
+        f.write(f"with_assim_rmse_std {m_as:.6f} r2 {r_as}\n")
+        f.write("\n# Time-wise RMSE (std space)\n")
+        f.write("time(h)\tno_assim_RMSE\twith_assim_RMSE\n")
+        for i, tt in enumerate(times):
+            f.write(f"{tt:.2f}\t{err_no[i]:.4f}\t{err_as[i]:.4f}\n")
 
     # plot rmse vs time
     plt.figure(figsize=(5,3))
