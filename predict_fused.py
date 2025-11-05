@@ -115,8 +115,6 @@ def main(cfg):
         D = pca_dict["hic"]["D"]
         preds_as["hic"] = pca_dict["hic"]["pca"].inverse_transform(z_as[:, offset:offset+D])
 
-    # ----- fused metrics: concatenate modalities along feature axis -----
-    # build fused true/pred arrays in std-space
     has_both = use_atac and use_hic
     if has_both:
         X_true_fused = np.concatenate([X_true_a_std, X_true_h_std], axis=1)
@@ -131,10 +129,8 @@ def main(cfg):
         X_no_fused   = preds_no["hic"]
         X_as_fused   = preds_as["hic"]
 
-    # baseline = hold-last（用第0时刻平铺）
     bl_fused = np.tile(X_true_fused[0], (len(times), 1))
 
-    # global metrics (fused)
     baseline_rmse = rmse(X_true_fused, bl_fused)
     baseline_r2   = r2(X_true_fused, bl_fused)
     no_rmse       = rmse(X_true_fused, X_no_fused)
@@ -142,22 +138,18 @@ def main(cfg):
     as_rmse       = rmse(X_true_fused, X_as_fused)
     as_r2         = r2(X_true_fused, X_as_fused)
 
-    # print to console in your desired format
     print(f"baseline_rmse_std {baseline_rmse:.6f} r2 {baseline_r2}")
     print(f"no_assim_rmse_std {no_rmse:.6f} r2 {no_r2}")
     print(f"with_assim_rmse_std {as_rmse:.6f} r2 {as_r2}")
 
-    # per-time rmse
     err_no = np.sqrt(((X_true_fused - X_no_fused)**2).mean(axis=1))
     err_as = np.sqrt(((X_true_fused - X_as_fused)**2).mean(axis=1))
     for i, tt in enumerate(times):
         print(f"time {tt:.2f}h no-assim {err_no[i]:.4f} with-assim {err_as[i]:.4f}")
 
-    # mean absolute difference between with-assim and no-assim
     diff_fused = float(np.abs(X_as_fused - X_no_fused).mean())
     print(f"mean |with-assim - no-assim| in std space: {diff_fused:.10f}")
 
-    # write the SAME lines into metrics_fused.txt (under config-defined fig_dir)
     os.makedirs(cfg["output"]["fig_dir"], exist_ok=True)
     with open(os.path.join(cfg["output"]["fig_dir"], "metrics_fused.txt"), "w") as f:
         f.write(f"baseline_rmse_std {baseline_rmse:.6f} r2 {baseline_r2}\n")
@@ -167,7 +159,6 @@ def main(cfg):
             f.write(f"time {tt:.2f}h no-assim {err_no[i]:.4f} with-assim {err_as[i]:.4f}\n")
         f.write(f"mean |with-assim - no-assim| in std space: {diff_fused:.10f}\n")
 
-    # quick per-time plots (ATAC only if present) — keep original behavior
     if use_atac:
         var = X_true_a_std.var(axis=0)
         top_idx = np.argsort(var)[-6:][::-1]
@@ -181,7 +172,6 @@ def main(cfg):
             plt.savefig(os.path.join(cfg["output"]["fig_dir"], f"fused_atac_peak_std_{k}_{p}.png"), dpi=300)
             plt.close()
 
-    # dump preds for notebook — keep original behavior
     if use_atac:
         np.save(os.path.join(cfg["output"]["fig_dir"], "X_pred_atac_std_noass.npy"),
                 preds_no["atac"].astype(np.float32))
@@ -195,7 +185,7 @@ def main(cfg):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("--config", type=str, default="configs/default.json")
+    ap.add_argument("--config", type=str, default="configs/default_modality.json")
     args = ap.parse_args()
     cfg = json.load(open(args.config))
     main(cfg)
