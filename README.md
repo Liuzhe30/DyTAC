@@ -31,3 +31,9 @@ python predict_fused.py --config configs/default_modality.json
 |Data|resource|
 |:---:|:---:|
 |stimulated raw data|[GEO Series accession](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138767)|
+
+## HyTAC UI
+```shell
+pip install streamlit plotly umap-learn
+streamlit run app/app.py
+```
