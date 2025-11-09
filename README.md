@@ -34,6 +34,6 @@ python predict_fused.py --config configs/default_modality.json
 
 ## HyTAC UI
 ```shell
-pip install streamlit plotly umap-learn
+pip install streamlit plotly
 streamlit run app/app.py
 ```
